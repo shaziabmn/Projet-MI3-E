@@ -1,26 +1,36 @@
-# Nom de l'exécutable
-EXEC = cyfighters
-
-# Fichiers source
-SRC = main.c combat.c
-
-# Fichiers d'en-tête
-HEADERS = combat.h
-
-# Options de compilation
+# Define the compiler
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c11
 
-# Règle principale
-all: $(EXEC)
+# Define the flags
+CFLAGS = -Wall -Wextra -Werror
 
-$(EXEC): $(SRC) $(HEADERS)
-	$(CC) $(CFLAGS) -o $(EXEC) $(SRC)
+# Define the target executable
+TARGET = cyfighters
 
-# Nettoyer les fichiers compilés
+# Define the source files
+SRCS = main.c combat.c
+
+# Define the object files
+OBJS = $(SRCS:.c=.o)
+
+# Rule to build the target executable
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
+
+# Rule to build the object files
+%.o: %.c combat.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Rule to clean the build directory
 clean:
-	rm -f $(EXEC)
+	rm -f $(OBJS) $(TARGET)
 
-# Tout nettoyer
-fclean: clean
+# Rule to run the program
+run: $(TARGET)
+	./$(TARGET)
+
+.PHONY: clean run
+
+
+
 
