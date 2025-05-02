@@ -41,3 +41,37 @@ if (cible->currents_hp < 0) cible->currents_hp = 0;
 // Retour HP restants
 return cible->currents_hp;
 }
+
+else if (strcmp(tech.description, "boost_attaque") == 0) {
+    attaquant->attack += tech.value;
+    printf("%s augmente son attaque de %d !\n", attaquant->name, tech.value);
+}
+else if (strcmp(tech.description, "reduction_defense") == 0) {
+    cible->defense -= tech.value;
+    if (cible->defense < 0) cible->defense = 0;
+    printf("%s perd %d de défense !\n", cible->name, tech.value);
+}
+int est_mort(Fighter *f) {
+    return f->pv_currents <= 0;
+}
+
+void combat(Fighter *f1, Fighter *f2) {
+    int tour = 1;
+    while (!est_mort(f1) && !est_mort(f2)) {
+        printf("Tour %d :\n", tour);
+
+        if (tour % 2 == 1) {
+            Technique attaque_joueur = {"Coup de poing", 10, "attaque", 0, 0};
+            utiliser_technique(f1, f2, attaque_joueur);
+        } else {
+            Technique attaque_bot = {"Frappe", 8, "attaque", 0, 0};
+            utiliser_technique(f2, f1, attaque_bot);
+        }
+
+        printf("%s : %d PV | %s : %d PV\n\n", f1->name, f1->pv_currents, f2->name, f2->pv_currents);
+        tour++;
+    }
+
+    if (est_mort(f1)) printf("%s a perdu !\n", f1->name);
+    else printf("%s a perdu !\n", f2->name);
+}
