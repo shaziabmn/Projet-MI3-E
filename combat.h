@@ -1,37 +1,37 @@
 #ifndef COMBAT_H
 #define COMBAT_H
 
-#define NAME_SIZE 20
-#define MAX_FIGHTERS 3
+#define TAILLE_NOM 20
+#define MAX_COMBATTANTS 3
 #define MAX_TECHNIQUES 3
 
 //Structure Technique
 typedef struct {
-    char name[NAME_SIZE];
-    int value;
+    char nom[TAILLE_NOM];
+    int valeur;
     char description;
-    int active_turns;
-    int reload_turns;
+    int tours_actifs;
+    int tours_rechargement;
 } Technique;
 
 //Structure Fighter
 typedef struct {
-    char name[NAME_SIZE];
-    int currents_hp;
-    int max_hp;
-    int attack;
+    char name[TAILLE_NOM];
+    int pv_courants;
+    int pv_max;
+    int attaque;
     int defense;
-    int agility;
-    int speed;
+    int agilite;
+    int vitesse;
     Technique special[MAX_TECHNIQUES];
-    int technique_count;
-} Fighter;
+    int nb_technique;
+} Combattant;
 
 //Structure Team
 typedef struct {
-    char name[NAME_SIZE];
-    Fighter members[MAX_FIGHTERS];
-} Team;
+    char nom[TAILLE_NOM];
+    Combattant membres[MAX_COMBATTANTS];
+} Equipe;
 
 #endif
 
