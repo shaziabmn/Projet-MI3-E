@@ -2,8 +2,8 @@
 #define COMBAT_H
 
 #define NAME_SIZE 20
-#define MAX_FIGHTERS 5
-#define MAX_TECHNIQUES 5
+#define MAX_FIGHTERS 3
+#define MAX_TECHNIQUES 3
 
 //Structure Technique
 typedef struct {
