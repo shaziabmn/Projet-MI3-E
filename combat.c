@@ -5,20 +5,20 @@
 
 //Fonction utiliser technique
 
-void utiliser_technique(Fighter *attaquant, Fighter *cible, Technique tech) {
+void utiliser_technique(Combattant *attaquant, Combattant *cible, Technique tech) {
 // Exemple par rapport à la description
 if (strcmp(tech.description, "attaque") == 0) {
 attaquer(attaquant, cible, tech);
 }
 else if (strcmp(tech.description, "soin") == 0) {
-attaquant->currents_hp += tech.value;
-if (attaquant->currents_hp > attaquant->max_hp) {
-attaquant->currents_hp = attaquant->max_hp;
+attaquant->pv_courants += tech.valeur;
+if (attaquant->pv_courants > attaquant->pv_max) {
+attaquant->pv_courants = attaquant->pv_max;
 }
 }
 else if (strcmp(tech.description, "recharge") == 0) {
 // Peut être gérer de l'énergie (dans future version)
-printf("%s se recharge\n", attaquant->name);
+printf("%s se recharge\n", attaquant->nom);
 }
 
 }
@@ -27,32 +27,32 @@ printf("%s se recharge\n", attaquant->name);
 
 int attaquer(Fighter *attaquant, Fighter *cible, Technique tech) {
 // Calcul dégâts
-int degats = tech.value + attaquant->attack - cible->defense;
+int degats = tech.valeur + attaquant->attaque - cible->defense;
 
 // Empêcher dégâts négatifs
 if (degats < 0) degats = 0;
 
 // Appliquer dégâts
-cible->currents_hp -= degats;
+cible->pv_courants -= degats;
 
 // Empêcher HP négatifs
-if (cible->currents_hp < 0) cible->currents_hp = 0;
+if (cible->pv_courants < 0) cible->pv_courants = 0;
 
 // Retour HP restants
-return cible->currents_hp;
+return cible->pv_courants;
 }
 
 else if (strcmp(tech.description, "boost_attaque") == 0) {
-    attaquant->attack += tech.value;
-    printf("%s augmente son attaque de %d !\n", attaquant->name, tech.value);
+    attaquant->attaque += tech.valeur;
+    printf("%s augmente son attaque de %d !\n", attaquant->nom, tech.valeur);
 }
 else if (strcmp(tech.description, "reduction_defense") == 0) {
-    cible->defense -= tech.value;
+    cible->defense -= tech.valeur;
     if (cible->defense < 0) cible->defense = 0;
-    printf("%s perd %d de défense !\n", cible->name, tech.value);
+    printf("%s perd %d de défense !\n", cible->nom, tech.valeur);
 }
 int est_mort(Fighter *f) {
-    return f->pv_currents <= 0;
+    return f->pv_courants <= 0;
 }
 
 void combat(Fighter *f1, Fighter *f2) {
@@ -68,7 +68,7 @@ void combat(Fighter *f1, Fighter *f2) {
             utiliser_technique(f2, f1, attaque_bot);
         }
 
-        printf("%s : %d PV | %s : %d PV\n\n", f1->name, f1->pv_currents, f2->name, f2->pv_currents);
+        printf("%s : %d PV | %s : %d PV\n\n", f1->name, f1->pv_courants, f2->nom, f2->pv_courants);
         tour++;
     }
 
