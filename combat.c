@@ -1,4 +1,5 @@
 //PARTIE SHAZIA 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -67,85 +68,97 @@ int est_ko(const Combattant *c){
 
 
 
+// PARTIE HIBA 
 
-
-
-
-//PARTIE HIBA 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "combat.h"
+#include <string.h>
+#include <time.h>
 
-//Fonction utiliser technique
+// Fonction pour calculer et infliger des dégâts
+void attaquer(Combattant *attaquant, Combattant *cible) {
+    int degats = attaquant->attaque - cible->defense;
+    if (degats < 0) degats = 0;
 
-void utiliser_technique(Combattant *attaquant, Combattant *cible, Technique tech) {
-// Exemple par rapport à la description
-if (strcmp(tech.description, "attaque") == 0) {
-attaquer(attaquant, cible, tech);
-}
-else if (strcmp(tech.description, "soin") == 0) {
-attaquant->pv_courants += tech.valeur;
-if (attaquant->pv_courants > attaquant->pv_max) {
-attaquant->pv_courants = attaquant->pv_max;
-}
-}
-else if (strcmp(tech.description, "recharge") == 0) {
-// Peut être gérer de l'énergie (dans future version)
-printf("%s se recharge\n", attaquant->nom);
+    cible->pv_courants -= degats;
+    if (cible->pv_courants < 0) cible->pv_courants = 0;
+
+    printf("%s attaque %s et inflige %d dégâts !\n", attaquant->nom, cible->nom, degats);
 }
 
-}
+// Fonction pour utiliser une technique spéciale
+void utiliser_technique(Combattant *c, Combattant *adversaire) {
+    if (c->special.tours_rechargement > 0) {
+        printf("%s utilise %s !\n", c->nom, c->special.nom);
+        const char *nom = c->special.nom;
 
-//Fonction attaquer
+        if (strcmp(nom, "Soin") == 0) {
+            c->pv_courants += c->special.valeur;
+            if (c->pv_courants > c->pv_max)
+                c->pv_courants = c->pv_max;
+            printf("%s récupère %d PV !\n", c->nom, c->special.valeur);
 
-int attaquer(Fighter *attaquant, Fighter *cible, Technique tech) {
-// Calcul dégâts
-int degats = tech.valeur + attaquant->attaque - cible->defense;
+        } else if (strcmp(nom, "Frappe") == 0) {
+            adversaire->pv_courants -= c->special.valeur;
+            if (adversaire->pv_courants < 0)
+                adversaire->pv_courants = 0;
+            printf("%s inflige %d dégâts supplémentaires !\n", c->nom, c->special.valeur);
 
-// Empêcher dégâts négatifs
-if (degats < 0) degats = 0;
+        } else if (strcmp(nom, "Bouclier") == 0) {
+            c->defense += c->special.valeur;
+            printf("%s augmente sa défense de %d pendant %d tours.\n", c->nom, c->special.valeur, c->special.tours_actifs);
 
-// Appliquer dégâts
-cible->pv_courants -= degats;
+        } else if (strcmp(nom, "Esquive") == 0) {
+            c->agilite += c->special.valeur;
+            printf("%s augmente son agilité de %d pendant %d tour(s).\n", c->nom, c->special.valeur, c->special.tours_actifs);
 
-// Empêcher HP négatifs
-if (cible->pv_courants < 0) cible->pv_courants = 0;
+        } else if (strcmp(nom, "Sortilège") == 0) {
+            c->attaque *= 2;
+            printf("%s double son attaque pendant %d tours !\n", c->nom, c->special.tours_actifs);
 
-// Retour HP restants
-return cible->pv_courants;
-}
+        } else if (strcmp(nom, "Rapidité") == 0) {
+            c->vitesse += c->special.valeur;
+            printf("%s augmente sa vitesse de %d pendant %d tour(s).\n", c->nom, c->special.valeur, c->special.tours_actifs);
 
-else if (strcmp(tech.description, "boost_attaque") == 0) {
-    attaquant->attaque += tech.valeur;
-    printf("%s augmente son attaque de %d !\n", attaquant->nom, tech.valeur);
-}
-else if (strcmp(tech.description, "reduction_defense") == 0) {
-    cible->defense -= tech.valeur;
-    if (cible->defense < 0) cible->defense = 0;
-    printf("%s perd %d de défense !\n", cible->nom, tech.valeur);
-}
-int est_mort(Fighter *f) {
-    return f->pv_courants <= 0;
-}
-
-void combat(Fighter *f1, Fighter *f2) {
-    int tour = 1;
-    while (!est_mort(f1) && !est_mort(f2)) {
-        printf("Tour %d :\n", tour);
-
-        if (tour % 2 == 1) {
-            Technique attaque_joueur = {"Coup de poing", 10, "attaque", 0, 0};
-            utiliser_technique(f1, f2, attaque_joueur);
         } else {
-            Technique attaque_bot = {"Frappe", 8, "attaque", 0, 0};
-            utiliser_technique(f2, f1, attaque_bot);
+            printf("Technique inconnue.\n");
         }
 
-        printf("%s : %d PV | %s : %d PV\n\n", f1->name, f1->pv_courants, f2->nom, f2->pv_courants);
+        c->special.tours_rechargement = 0; // On empêche la réutilisation immédiate
+    } else {
+        printf("La technique de %s n'est pas encore rechargée.\n", c->nom);
+    }
+}
+
+// Fonction pour gérer un tour de combat complet
+void lancer_combat(Combattant *j1, Combattant *j2) {
+    int tour = 1;
+
+    while (!est_ko(j1) && !est_ko(j2)) {
+        printf("\n===== Tour %d =====\n", tour);
+        printf("État des combattants :\n");
+        afficher_combattant(j1);
+        afficher_combattant(j2);
+
+        if (j1->vitesse >= j2->vitesse) {
+            attaquer(j1, j2);
+            if (!est_ko(j2)) attaquer(j2, j1);
+        } else {
+            attaquer(j2, j1);
+            if (!est_ko(j1)) attaquer(j1, j2);
+        }
+
+        // Recharge les techniques
+        if (j1->special.tours_rechargement < 3) j1->special.tours_rechargement++;
+        if (j2->special.tours_rechargement < 3) j2->special.tours_rechargement++;
+
         tour++;
     }
 
-    if (est_mort(f1)) printf("%s a perdu !\n", f1->name);
-    else printf("%s a perdu !\n", f2->name);
+    printf("\n=== Fin du combat ===\n");
+    if (est_ko(j1))
+        printf("%s est KO ! Victoire de %s !\n", j1->nom, j2->nom);
+    else
+        printf("%s est KO ! Victoire de %s !\n", j2->nom, j1->nom);
 }
