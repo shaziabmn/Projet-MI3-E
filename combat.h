@@ -4,7 +4,7 @@
 #define TAILLE_NOM 20
 #define MAX_COMBATTANTS 3
 
-//Structure Technique
+// Structure Technique
 typedef struct {
     char nom[TAILLE_NOM];
     int valeur;
@@ -13,7 +13,7 @@ typedef struct {
     int tours_rechargement;
 } Technique;
 
-//Structure Combattant
+// Structure Combattant
 typedef struct {
     char nom[TAILLE_NOM];
     int pv_courants;
@@ -25,15 +25,18 @@ typedef struct {
     Technique special;
 } Combattant;
 
-//Structure Equipe
+// Structure Equipe
 typedef struct {
     char nom[TAILLE_NOM];
     Combattant membres[MAX_COMBATTANTS];
 } Equipe;
 
 // Déclarations des fonctions
-int charger_combattants(const char *nomFichier, Combattant liste[], int max);
-void afficher_combattant(const Combattant *c);
-int est_ko(const Combattant *c);
+int charger_combattants(const char *nomFichier, Combattant liste[], int max); // Charger les combattants depuis un fichier texte
+
+void afficher_combattant(const Combattant *c); // Afficher les caractéristiques d’un combattant
+
+int est_ko(const Combattant *c); // Vérifier si un combattant est KO
+
 
 #endif
