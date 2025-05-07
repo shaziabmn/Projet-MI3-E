@@ -38,7 +38,14 @@ void afficher_combattant(const Combattant *c); // Afficher les caractéristiques
 
 int est_ko(const Combattant *c); // Vérifier si un combattant est KO
 
-//AJOUTER FONCTIONS DE HIBA ET WAHIBA
+
+
+// PARTIE HIBA
+
+void attaquer(Combattant *attaquant, Combattant *cible);
+void utiliser_technique(Combattant *c, Combattant *adversaire);
+void lancer_combat(Combattant *j1, Combattant *j2);
+
 
 
 #endif
