@@ -1,1 +1,6 @@
-
+Guérisseuse ; 220 ; 38 ; 34 ; 7 ; 6 ; Soin ; 40 ; Restaure immédiatement 40 PV ; 0 ; 3  
+Guerrier ; 200 ; 52 ; 28 ; 8 ; 7 ; Frappe  ; 30 ; Inflige immédiatement 30 dégâts supplémentaires ; 0 ; 2  
+Gardienne ; 240 ; 45 ; 42 ; 6 ; 5 ; Bouclier ; 20 ; Augmente la défense de 20 pendant 2 tours ; 2 ; 4  
+Magicien ; 180 ; 47 ; 37 ; 7 ; 6 ; Esquive ; 15 ; Augmente l’agilité de 15 pendant 1 tour ; 1 ; 2  
+Sorcière ; 190 ; 44 ; 38 ; 7 ; 6 ; Sortilège ; 2 ; Double l’attaque pendant 2 tours ; 2 ; 4  
+Eclaireur ; 180 ; 46 ; 35 ; 7 ; 7 ; Rapidité ; 10 ; Augmente la vitesse de 10 pendant 1 tour ; 1 ; 2
