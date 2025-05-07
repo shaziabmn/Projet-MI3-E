@@ -38,5 +38,7 @@ void afficher_combattant(const Combattant *c); // Afficher les caractéristiques
 
 int est_ko(const Combattant *c); // Vérifier si un combattant est KO
 
+//AJOUTER FONCTIONS DE HIBA ET WAHIBA
+
 
 #endif
