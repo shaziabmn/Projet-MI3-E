@@ -1,5 +1,5 @@
-#ifndef BIB_H_INCLUDED
-#define BIB_H_INCLUDED
+#ifndef FIGHT_H_INCLUDED
+#define FIGHT_H_INCLUDED
 
 
 #define LARGEUR_TERMINAL 120
@@ -61,4 +61,4 @@ int est_ko( Combattant *c);
 
 
 
-#endif // BIB_H_INCLUDED
+#endif 
