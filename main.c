@@ -6,7 +6,7 @@ int main() {
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "bib.h"
+#include "fight.h"
 
  int main ()
 
