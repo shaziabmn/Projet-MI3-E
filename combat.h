@@ -1,10 +1,10 @@
 #ifndef COMBAT_H
 #define COMBAT_H
 
-#define TAILLE_NOM 20
+#define TAILLE_NOM 16
 #define MAX_COMBATTANTS 3
 
-// Structure Technique
+// Structure des techniques
 typedef struct {
     char nom[TAILLE_NOM];
     int valeur;
@@ -13,39 +13,35 @@ typedef struct {
     int tours_rechargement;
 } Technique;
 
-// Structure Combattant
+// Structure des combattants
 typedef struct {
     char nom[TAILLE_NOM];
-    int pv_courants;
-    int pv_max;
-    int attaque;
-    int defense;
-    int agilite;
-    int vitesse;
+    int pv_courants, pv_max;
+    int attaque, defense, agilite, vitesse;
+
+    // Sauvegarde des statistiques originales
+    int base_attaque, base_defense, base_agilite, base_vitesse;
+
+    int tours_effet; // durée restante de l’effet actif
+
     Technique special;
 } Combattant;
 
-// Structure Equipe
+// Structure des joueurs
 typedef struct {
     char nom[TAILLE_NOM];
-    Combattant membres[MAX_COMBATTANTS];
-} Equipe;
+    Combattant equipe[MAX_COMBATTANTS];
+    int nb_combattants;
+} Joueur;
 
-// Déclarations des fonctions
-int charger_combattants(const char *nomFichier, Combattant liste[], int max); // Charger les combattants depuis un fichier texte
-
-void afficher_combattant(const Combattant *c); // Afficher les caractéristiques d’un combattant
-
-int est_ko(const Combattant *c); // Vérifier si un combattant est KO
-
-
-
-// PARTIE HIBA
-
+// Déclaration fonctions
+void initialiser_stats_base(Combattant *c);
 void attaquer(Combattant *attaquant, Combattant *cible);
-void utiliser_technique(Combattant *c, Combattant *adversaire);
-void lancer_combat(Combattant *j1, Combattant *j2);
-
-
+void utiliser_technique(Combattant *utilisateur, Combattant *cible);
+void gerer_effets_tour(Combattant *c);
+void tour_joueur(Joueur *joueur, Joueur *adverse);
+void lancer_combat(Joueur *j1, Joueur *j2);
+int equipe_KO(Joueur *j);
+int charger_combattants(const char *nomFichier, Combattant liste[], int max);
 
 #endif
