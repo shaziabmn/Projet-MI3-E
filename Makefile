@@ -1,36 +1,30 @@
-//Define the compiler
+# Nom de l'exécutable
+TARGET = jeu
+
+# Compilateur
 CC = gcc
 
-//Define the flags
-CFLAGS = -Wall -Wextra -Werror
+# Options de compilation
+CFLAGS = -Wall -g
 
-//Define the target executable
-TARGET = cyfighters
+# Fichiers sources
+SRCS = main.c combat.c interface.c
 
-//Define the source files
-SRCS = main.c combat.c
-
-//Define the object files
+# Fichiers objets
 OBJS = $(SRCS:.c=.o)
 
-//Rule to build the target executable
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
+# Règle par défaut
+all: $(TARGET)
 
-//Rule to build the object files
-%.o: %.c combat.h
+# Génération de l'exécutable
+$(TARGET): $(OBJS)
+	$(CC) $(OBJS) -o $(TARGET)
+
+# Compilation des fichiers objets
+%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-//Rule to clean the build directory
+# Nettoyage des fichiers objets et de l'exécutable
 clean:
 	rm -f $(OBJS) $(TARGET)
-
-//Rule to run the program
-run: $(TARGET)
-	./$(TARGET)
-
-.PHONY: clean run
-
-
-
 
