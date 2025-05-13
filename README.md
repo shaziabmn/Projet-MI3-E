@@ -68,4 +68,4 @@ Et que le combat commence !!
 
 **Remerciements**
 
-Merci à notre encadrante Marwa Ben Abdessalem pour son accompagnement, sa bienveillance et ses retours constructifs tout au long du projet !
+Nous remercions notre encadrante Marwa Ben Abdessalem pour son accompagnement, sa bienveillance et ses retours constructifs tout au long du projet !
