@@ -45,12 +45,12 @@ typedef struct {
 
 // Déclaration fonctions
 int charger_combattants(const char *nomFichier, Combattant liste[]);
-int equipe_KO(Equipe *j);
+int equipe_KO(Equipe *e);
 void gerer_effets_tour(Combattant *c);
-void attaquer(Combattant *attaquant, Combattant *cible);
+void attaquer(Combattant *attaquant, Combattant *defenseur);
 void utiliser_technique(Combattant *utilisateur, Combattant *cible);
-void tour_joueur(Equipe *joueur, Equipe *adverse, int index);
-void lancer_combat(Equipe *j1, Equipe *j2);
+void tour_joueur(Equipe *active, Equipe *adverse, int index);
+void lancer_combat(Equipe *e1, Equipe *e2);
 
 
 #endif
