@@ -6,135 +6,153 @@
 #include "combat.h"
 #include "interface.h"
 
-#define MAX_TOTAL 10
-
-// Fonction d'affichage des combattants disponibles
-void afficher_liste_combattants(Combattant *liste, int n) {
-    printf("\n");
-    printf("\n");
-    printf(BOLD_WHITE"\n                  --- ⚡️  LISTE DES COMBATTANTS DISPONIBLES  ⚡️ ---\n" RESET);
-
-    for (int i = 0; i < n; i++) {
-        printf("%d", i + 1);
-        affichage_perso(&liste[i]);  // Affiche les détails du combattant
-    }
-}
 
 // Fonction pour choisir le nom de l'équipe
-void nom_equipe(Joueur *j) {
-    printf("\n");
-    printf("✨ Nom de l'équipe : ");
-    scanf("%s", j->nom);
-    j->nb_combattants = MAX_COMBATTANTS;
+void nom_equipe(Equipe *e) {
+    // Vider le buffer d'entrée pour s'assurer qu'il n'y a pas de caractères résiduels
+    while (getchar() != '\n');  
+    
+    printf(BOLD_WHITE"\n✨ Nom de l'équipe (15 caractères max) : "RESET);
+    fgets(e->nom, TAILLE_NOM, stdin); // lit au maximum (TAILLE_NOM - 1) caractères + \0
+    
 }
+
+
 
 // Fonction pour sélectionner une équipe
-void selectionner_equipe(Joueur *j, Combattant *disponibles, int total) {
-    int choix[MAX_COMBATTANTS];
-    for (int i = 0; i < MAX_COMBATTANTS; i++) {
-        int choix_valide = 0;
-        
-        while (!choix_valide) {
-            printf("\n\n");
-            printf(BOLD_WHITE"\n                  --- 👤  CHOIX DU COMBATTANT %d/%d  👤 ---\n" RESET, i + 1, MAX_COMBATTANTS);
-            printf("\n");
-            printf("👉 Entrez le numéro du combattant de votre choix : ");
+void selectionner_equipe(Equipe *e, Combattant *c, int total) {
 
-            // Un seul scanf pour récupérer l'entrée
-            if (scanf("%d", &choix[i]) != 1 || choix[i] < 1 || choix[i] > total) {
+    int choix[NB_COMBATTANTS]; // Tableau pour stocker les choix des combattants de l'équipe
+    for (int i = 0; i < NB_COMBATTANTS; i++) { 
+        int choix_valide = 0; // Variable pour vérifier si l'entrée de l'utilisateur est valide
+
+        while (!choix_valide) { // Boucle jusqu'à ce qu'un choix valide soit effectué
+            
+            printf(BOLD_YELLOW"\n\n\n\n                     --- 👤  CHOIX DU COMBATTANT %d/%d  👤 ---\n\n\n" RESET, i + 1, NB_COMBATTANTS);
+            printf(BOLD_WHITE"👉 Entrez le numéro du combattant de votre choix : "RESET);
+
+            if (scanf("%d", &choix[i]) != 1 || choix[i] < 1 || choix[i] > total) { // Si l'entrée est invalide, affiche un message d'erreur
                 printf(RED "❌ Choix invalide. Veuillez entrer un nombre entre 1 et %d\n" RESET, total);
-                while (getchar() != '\n');  // Vider le buffer d'entrée
+                while (getchar() != '\n');  // Vider le buffer d'entrée pour éviter des entrées incorrectes
+    
             } else {
-                choix_valide = 1;
+                choix_valide = 1; // Si l'entrée est valide, sortir de la boucle
+
             }
         }
-
-        // Sélection du combattant dans l'équipe
-        j->equipe[i] = disponibles[choix[i] - 1];
-        initialiser_stats_base(&j->equipe[i]);
+        // Sélection du combattant dans l'équipe à partir de 1
+        e->combattant[i] = c[choix[i] - 1];
     }
+
 }
 
 
+// Fonction principale
 int main() {
-    srand(time(NULL));
+    
+    srand(time(NULL)); // Initialisation du générateur de nombres aléatoires
 
-    Combattant combattants_disponibles[MAX_TOTAL];
-    int nb_total = charger_combattants("combattants.txt", combattants_disponibles, MAX_TOTAL);
+    // Déclaration d'un tableau pour stocker les combattants
+    Combattant combattants[MAX_COMBATTANTS];
 
-    if (nb_total < 2) {
+    // Chargement des combattants depuis le fichier "combattants.txt"
+    int nb_combattants = charger_combattants("combattants.txt", combattants);
+
+
+    // Vérifie s’il y a assez de combattants pour former 2 équipes complètes (sans doublons)
+    if (nb_combattants < NB_COMBATTANTS*2) {
         printf("Erreur : pas assez de combattants chargés.\n");
         return 1;
     }
 
-    int choix_menu;
-    afficher_lobby();
+    // Affiche l'écran d'accueil
+    afficher_jeu();
+
+    int choix_menu = 0; // Variable pour vérifier si l'entrée de l'utilisateur est valide
 
     do {
+        // Affiche le menu principal
         afficher_menu();
 
+        // Lecture du choix de l'utilisateur et vérification de sa validité
         if (scanf("%d", &choix_menu) != 1 || (choix_menu != 1 && choix_menu != 2)) {
             printf(RED "❌ Choix invalide. Veuillez entrer '1' pour lancer le jeu ou '2' pour quitter\n" RESET);
-            while (getchar() != '\n');  
+            while (getchar() != '\n');  // Vider le buffer d'entrée pour éviter des entrées incorrectes
             continue;
         }
 
+        // Si l'utilisateur choisit de lancer le jeu
         if (choix_menu == 1) {
-            Joueur joueur1, joueur2;
-
-            printf("\n");
+            Equipe e1, e2;
+            
+            // Equipe 1
+            printf("\n\n\n");
             printf(GREEN "\n                  ═══════════════════════════════════════════════\n"RESET);
             printf(BOLD_WHITE"                      🔷 SÉLECTION DE L'ÉQUIPE DU JOUEUR 1 🔷         "RESET);
             printf(GREEN "\n                  ═══════════════════════════════════════════════\n"RESET);
+            printf("\n\n");
 
-            nom_equipe(&joueur1);
-            afficher_liste_combattants(combattants_disponibles, nb_total);
-            selectionner_equipe(&joueur1, combattants_disponibles, nb_total);
+            // Saisie du nom de l’équipe 1
+            nom_equipe(&e1);
 
-            printf("\n");
-            printf("\n");
+            // Affiche la liste de tous les combattants disponibles
+            afficher_liste_combattants(combattants, nb_combattants);
+
+            // Permet à l'équipe 1 de choisir ses combattants
+            selectionner_equipe(&e1, combattants, nb_combattants);
+
+
+            // Equipe 2
+            printf("\n\n\n\n");
             printf(RED "\n                  ═══════════════════════════════════════════════\n"RESET);
             printf(BOLD_WHITE"                      🔸 SÉLECTION DE L’ÉQUIPE DU JOUEUR 2 🔸         "RESET);
             printf(RED "\n                  ═══════════════════════════════════════════════\n"RESET);
+            printf("\n\n");
 
-            nom_equipe(&joueur2);
-            afficher_liste_combattants(combattants_disponibles, nb_total);
-            selectionner_equipe(&joueur2, combattants_disponibles, nb_total);
+            // Saisie du nom de l’équipe 2
+            nom_equipe(&e2);
+            // Affiche la liste de tous les combattants disponibles
+            afficher_liste_combattants(combattants, nb_combattants);
+
+            // Permet à l'équipe 2 de choisir ses combattants
+            selectionner_equipe(&e2, combattants, nb_combattants);
            
+            // Affiche un récapitulatif des deux équipes sélectionnées
+            afficher_equipes(&e1, &e2);
 
-            afficher_equipes(&joueur1, &joueur2);
 
-            printf("\n");
 
-    // Demander si on veut continuer
-    
-    char reponse;
-    do {
-    printf("\n");
-    printf(BOLD_CYAN "Souhaitez-vous continuer ? 💥 (o/n) : " RESET);
-    scanf(" %c", &reponse);
+            // Demande de confirmation pour lancer le combat
+            char reponse;
 
-    if (reponse != 'o' && reponse != 'O' && reponse != 'n' && reponse != 'N') {
-        printf(RED "❌ Choix invalide. Veuillez entrer 'o' pour continuer ou 'n' pour quitter.\n" RESET);
-        while (getchar() != '\n'); // vide le buffer en cas d'entrée invalide
-        printf("\n");
-    }
-    } while (reponse != 'o' && reponse != 'O' && reponse != 'n' && reponse != 'N');
+            do {
+            printf(BOLD_CYAN"\n Souhaitez-vous continuer ? 💥 (o/n) : "RESET);
+            scanf(" %c", &reponse); // %c avec un espace avant pour ignorer les '\n'
 
-    if (reponse == 'o' || reponse == 'O') {
-    lancer_combat(&joueur1, &joueur2);
-    } else {
-    printf(BOLD_YELLOW "MERCI D'AVOIR JOUÉ À CY-FIGHTERS ! À BIENTÔT 👋\n" RESET);
-    printf("\n");
+            if (reponse != 'o' && reponse != 'O' && reponse != 'n' && reponse != 'N') {
+                printf(RED "❌ Choix invalide. Veuillez entrer 'o' pour continuer ou 'n' pour quitter.\n\n" RESET);
+                while (getchar() != '\n'); // Vider le buffer d'entrée pour éviter des entrées incorrectes
+            }
 
-    return 0;
-    }
-        }
+            } while (reponse != 'o' && reponse != 'O' && reponse != 'n' && reponse != 'N');
 
-    } while (choix_menu != 2);
+            // Si l'utilisateur veut continuer, le combat est lancé
+            if (reponse == 'o' || reponse == 'O') {
+            lancer_combat(&e1, &e2);
 
-    printf("\n");
-    printf(BOLD_YELLOW "MERCI D'AVOIR JOUÉ À CY-FIGHTERS ! À BIENTÔT 👋\n" RESET);
+            // Sinon, message de fin 
+            } else {
+            printf(BOLD_YELLOW "\n MERCI D'AVOIR JOUÉ À CY-FIGHTERS ! À BIENTÔT 👋\n\n" RESET);
+            return 0;
+            }
+
+            }   
+
+    } while (choix_menu != 2); // Répète tant que l'utilisateur n’a pas choisi de quitter
+
+
+    // Message final à la fin du jeu
+    printf(BOLD_YELLOW "\n MERCI D'AVOIR JOUÉ À CY-FIGHTERS ! À BIENTÔT 👋\n" RESET);
     printf("\n");
 
     return 0;
