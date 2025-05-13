@@ -69,7 +69,7 @@ void attaquer(Combattant *attaquant, Combattant *defenseur) {
 
     defenseur->pv_courants -= degats;                      // Applique les dégâts
     if (defenseur->pv_courants < 0)
-        défenseur->pv_courants = 0;                        // Ne descend pas sous 0
+        defenseur->pv_courants = 0;                        // Ne descend pas sous 0
 
     // Affiche le résultat
     printf(BOLD_CYAN"\n\n%s attaque %s pour %d dégâts ! %s a maintenant %d PV ! 🌪️\n\n"RESET,
@@ -147,6 +147,7 @@ else if (strcmp(t->nom, "Rapidité") == 0) {
     // Message indiquant que les PV de l’ennemi sont divisés
     printf(BOLD_CYAN"%s divise les PV de %s ! %s a maintenant %d PV ! 🌩️\n"RESET,
            utilisateur->nom, cible->nom, cible->nom, cible->pv_courants);
+}
 }
 
 
