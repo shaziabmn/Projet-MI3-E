@@ -2,46 +2,55 @@
 #define COMBAT_H
 
 #define TAILLE_NOM 16
-#define MAX_COMBATTANTS 3
+#define NB_COMBATTANTS 3 // Nombre de combattants par équipe
+#define MAX_COMBATTANTS 10 // Nombre maximal de combattants autorisés dans le fichier
+
 
 // Structure des techniques
 typedef struct {
+
     char nom[TAILLE_NOM];
     int valeur;
     char description[100];
     int tours_actifs;
     int tours_rechargement;
+
 } Technique;
+
 
 // Structure des combattants
 typedef struct {
+
     char nom[TAILLE_NOM];
-    int pv_courants, pv_max;
-    int attaque, defense, agilite, vitesse;
+    int pv_courants; 
+    int pv_max;
+    int attaque;
+    int defense;
+    int agilite; 
+    int vitesse;
+    Technique technique;
 
-    // Sauvegarde des statistiques originales
-    int base_attaque, base_defense, base_agilite, base_vitesse;
-
-    int tours_effet; // durée restante de l’effet actif
-
-    Technique special;
 } Combattant;
 
-// Structure des joueurs
+
+// Structure des équipes
+
 typedef struct {
+
     char nom[TAILLE_NOM];
-    Combattant equipe[MAX_COMBATTANTS];
-    int nb_combattants;
-} Joueur;
+    Combattant combattant[NB_COMBATTANTS];
+
+} Equipe;
+
 
 // Déclaration fonctions
-void initialiser_stats_base(Combattant *c);
+int charger_combattants(const char *nomFichier, Combattant liste[]);
+int equipe_KO(Equipe *j);
+void gerer_effets_tour(Combattant *c);
 void attaquer(Combattant *attaquant, Combattant *cible);
 void utiliser_technique(Combattant *utilisateur, Combattant *cible);
-void gerer_effets_tour(Combattant *c);
-void tour_joueur(Joueur *joueur, Joueur *adverse);
-void lancer_combat(Joueur *j1, Joueur *j2);
-int equipe_KO(Joueur *j);
-int charger_combattants(const char *nomFichier, Combattant liste[], int max);
+void tour_joueur(Equipe *joueur, Equipe *adverse, int index);
+void lancer_combat(Equipe *j1, Equipe *j2);
+
 
 #endif
