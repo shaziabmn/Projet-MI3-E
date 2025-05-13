@@ -62,7 +62,7 @@ Et que le combat commence !!
 
 - Wahiba Talantikite : Interface terminale et logique de jeu (main.c, menus, boucle de jeu)
 
-- Travail commun : gestion des fichiers, relecture du code, Readme.md et rapport écrit.
+- Travail commun : gestion des fichiers, relecture du code, corrections, Readme.md et rapport écrit.
 
 
 
