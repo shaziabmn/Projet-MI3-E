@@ -10,11 +10,16 @@
 // Fonction pour choisir le nom de l'équipe
 void nom_equipe(Equipe *e) {
     // Vider le buffer d'entrée pour s'assurer qu'il n'y a pas de caractères résiduels
-    while (getchar() != '\n');  
+    while (getchar() != '\n');
     
     printf(BOLD_WHITE"\n✨ Nom de l'équipe (15 caractères max) : "RESET);
     fgets(e->nom, TAILLE_NOM, stdin); // lit au maximum (TAILLE_NOM - 1) caractères + \0
-    
+
+    // Supprimer le '\n' si présent
+    size_t len = strlen(e->nom);
+    if (len > 0 && e->nom[len - 1] == '\n') {
+        e->nom[len - 1] = '\0';  // Remplacer le '\n' par un '\0'
+    }
 }
 
 
