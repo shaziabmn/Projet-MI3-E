@@ -109,7 +109,7 @@ else if (strcmp(t->nom, "Frappe") == 0 || strcmp(t->nom, "Esquive") == 0) {
     if (cible->pv_courants < 0) cible->pv_courants = 0; // On empêche les PV de devenir négatifs
 
     // On affiche un message de dégâts infligés à l’adversaire
-    printf(BOLD_CYAN"%s inflige %d dégâts à %s! %s a maintenant %d PV ! 🎯\n"RESET,
+    printf(BOLD_CYAN"%s inflige %d dégâts à %s ! %s a maintenant %d PV ! 🎯\n"RESET,
            utilisateur->nom, t->valeur, cible->nom, cible->nom, cible->pv_courants);
 
 } 
