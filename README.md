@@ -56,7 +56,7 @@ Et que le combat commence !!
 
 **Répartition des rôles**
 
-- Shazia Abdoulrahimane : Structures et chargement des données (Technique, Combattant, fichiers .txt, Makefile) + Contribution pour l'interface et la gestion de l'utilisation de la technique spéciale
+- Shazia Abdoulrahimane : Structures et chargement des données (Technique, Combattant, Joueur, fichiers .txt, Makefile) + Contribution pour l'interface et la gestion de l'utilisation de la technique spéciale
 
 - Hiba Figuigui : Développement du moteur de combat (fonctions d’attaque, effets, tours) + Contribution dans la logique du jeu 
 
