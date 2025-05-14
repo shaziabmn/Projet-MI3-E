@@ -45,7 +45,9 @@ Chaque joueur compose une équipe de **3 combattants** parmi une sélection pers
 
 **Dans un terminal :**
 
-- cd projet 
+- ls
+- cd Téléchargement
+- cd Projet-MI3-E
 - make clean 
 - make 
 - ./jeu
