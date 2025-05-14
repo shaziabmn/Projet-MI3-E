@@ -1,7 +1,7 @@
-#include <stdio.h>              // Entrées/sorties standard
-#include <stdlib.h>             // Fonctions utilitaires (malloc, rand, etc.)
-#include <string.h>             // Manipulation de chaînes
-#include <time.h>               // Pour initialiser le générateur aléatoire
+#include <stdio.h>              
+#include <stdlib.h>             
+#include <string.h>             
+#include <time.h>               
 
 #include "combat.h"             // Définitions liées au combat
 #include "interface.h"          // Fonctions d'affichage
