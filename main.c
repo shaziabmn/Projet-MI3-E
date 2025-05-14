@@ -21,8 +21,6 @@ void nom_equipe(Equipe *e) {
         e->nom[len - 1] = '\0';  // Remplacer le '\n' par un '\0'
     }
 
-    // Vider à nouveau le buffer pour éviter tout caractère résiduel
-    while (getchar() != '\n');
 }
 
 
