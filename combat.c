@@ -19,7 +19,7 @@ int charger_combattants(const char *nomFichier, Combattant liste[]) {
 
     // Lire et extraire les données formatées depuis la ligne (combattants.txt)
     while (fgets(ligne, sizeof(ligne), f) && nb_combattants < MAX_COMBATTANTS) {
-        Combattant *c = &liste[nb_combattants];    // Récupère un pointeur vers le prochain combattant à remplir
+        Combattant *c = liste[nb_combattants];    // Récupère un pointeur vers le prochain combattant à remplir
 
         // Extraction des données du fichier texte
         sscanf(ligne, "%[^;];%d;%d;%d;%d;%d;%[^;];%d;%[^;];%d;%d",
