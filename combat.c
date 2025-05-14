@@ -219,9 +219,12 @@ void tour_joueur(Equipe *active, Equipe *adverse, int index) {
         // Lecture du choix
         if (scanf("%d", &choix) != 1) {
             while (getchar() != '\n'); // Vide le buffer si l'entrée est invalide
-            printf(RED"❌ Choix invalide.\n"RESET);
+            printf(RED"❌ Choix invalide. Veuillez entrer '1' pour attaquer ou '2' pour utiliser la technique spécial.\n\n"RESET);
             choix = 0; // On réinitialise pour que la boucle recommence
             continue;
+        } 
+        else if (choix != 1 && choix != 2) {
+            printf(RED"❌ Choix invalide. Veuillez entrer '1' pour attaquer ou '2' pour utiliser la technique spécial.\n\n"RESET);
         }
 
         // Si le joueur a choisi la technique, mais qu’elle est en recharge, on affiche un message d’erreur
