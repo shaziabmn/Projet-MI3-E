@@ -1,7 +1,7 @@
 #include <stdio.h>              
 #include <stdlib.h>             
-#include <string.h>             
-#include <time.h>               
+#include <string.h>             // Chaînes de caractères
+#include <time.h>               // Initialiser le générateur aléatoire 
 
 #include "combat.h"             // Définitions liées au combat
 #include "interface.h"          // Fonctions d'affichage
