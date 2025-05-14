@@ -226,8 +226,11 @@ void tour_joueur(Equipe *active, Equipe *adverse, int index) {
 
         // Si le joueur a choisi la technique, mais qu’elle est en recharge, on affiche un message d’erreur
         if (choix == 2 && c->technique.tours_rechargement > 0) {
-            printf(RED"❌ Technique en recharge. Utilisez l'attaque normale.\n"RESET);
+            
+            printf(BOLD_GREEN"\nLa technique spéciale %s est encore en recharge. ⏱️\nRESET", c->technique.nom);
+            printf(BOLD_GREEN"Il vous reste %d tour(s) avant de pouvoir l’utiliser. ⏳\nRESET", c->technique.tours_rechargement);
             choix = 0; // On demande à l'utilisateur de choisir à nouveau
+            
         }
     }
 
